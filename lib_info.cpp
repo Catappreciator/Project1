@@ -2,7 +2,7 @@
 //PROGRAM: Project01, Lib_info
 //DESCRIPTION:
 
-
+//I hate Git rn
 #include <iostream>
 using namespace std;
 
