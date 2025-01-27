@@ -4,6 +4,7 @@
 
 //I hate Git rn
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 
@@ -26,6 +27,36 @@ struct Artist {
     int nsongs;
 };
 
+int convertToSec(string duration){
+    string minutes = duration.substr(0,2);
+    string seconds = duration.substr(3,2);
+    int m = stoi(minutes);
+    int s = stoi(seconds);
+    m *= 60;
+    s += m;
+    
+    return s;
+
+}
+
+string convertToString(int seconds) {
+    //divide by 60 for minutes
+    int minutes = seconds / 60;
+    int leftoverSec = seconds - minutes; 
+
+    string line = "";
+    line.push_back(minutes);
+    line.push_back(':');
+
+    if(leftoverSec > 9) {
+        line.push_back(leftoverSec);
+    }
+    else {
+        line.push_back('0' + leftoverSec);
+    }
+    return line;
+}
+
 int main() {
 	//declare read in variables
 	string title;
@@ -47,7 +78,7 @@ int main() {
 			Artist *theArtist = new Artist(); //create new artist
 			//update Artist attributes
 			theArtist->name = artist; //initialized with read in artist variable
-			theArtist->time = time; //initialized with read in time
+			theArtist->time = duration; //initialized with read in time
 			theArtist->nsongs = track; //initialized with read in track
 
 			//create new album
@@ -59,12 +90,12 @@ int main() {
 
 			//create new song
 			Song *theSong = new Song();
-			theSong->name = title; //initilized with read in song
+			theSong->title = title; //initilized with read in song
 			theSong->time = duration; //initialized with read in song length
 			
 
 			//connect to Artist map with Album struct
-			theArtist->albums.insert(make_pair(artist, theAlbum);
+			theArtist->albums.insert(make_pair(artist, theAlbum));
 			//connect to Album map with Song struct
 			theAlbum->songs.insert(track, title);
 			theSong->title = title;
@@ -75,6 +106,10 @@ int main() {
 			ait = theArtist->albums.insert(make_pair(track, album));
 			//insert track/title in albums songs map
 			ait->second->songs.insert(make_pair(track,title));
+		}
+		else{
+		    
+
 		}
 	}
 	
