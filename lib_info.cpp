@@ -5,6 +5,7 @@
 //I hate Git rn
 #include <iostream>
 #include <map>
+#include <string>
 #include <sstream>
 using namespace std;
 
@@ -43,7 +44,7 @@ int convertToSec(string duration){
 string convertToString(int seconds) {
     //divide by 60 for minutes
     int minutes = seconds / 60;
-    int leftoverSec = seconds - minutes; 
+    int leftoverSec = seconds % 60; 
 
     string line = "";
     line.push_back(minutes);
@@ -75,15 +76,17 @@ int main() {
 		//find artist, if not there insert with album
 		sit = artists.find(artist); //iterator points where artist is
 		if(sit == artists.end()) { //if not found
-    
+		
 			//create new artist
+			cout << "New Artist: " << artist << endl; //TODO: print formatted (spaces not '_')
 			Artist *theArtist = new Artist(); //create new artist
 			//update Artist attributes
 			theArtist->name = artist; //initialized with read in artist variable
 			theArtist->time = tDuration; //initialized with read in time
-			theArtist->nsongs = track; //initialized with read in track
+			theArtist->nsongs = 1; //initialized with read in number of songs
 
 			//create new album
+			cout << "New Album: " << album << endl; //TODO print formatted
 			Album *theAlbum = new Album(); //create album
 			//update Album attributes
 			theAlbum->name = album; //initialized with read in album name
@@ -99,23 +102,38 @@ int main() {
 	    
 
 			//connect to Artist map with Album struct
-			theArtist->albums.insert(make_pair(artist, theAlbum));
+			theArtist->albums.insert(make_pair(album, theAlbum));
 			//connect to Album map with Song struct
-			theAlbum->songs.insert(track, title);
+			theAlbum->songs.insert(make_pair(track, theSong));
 			theSong->title = title;
 			theSong->time = tDuration;
 
 
-			//insert artist name and album in TheArtist albums map
-			ait = theArtist->albums.insert(make_pair(track, album));
-			//insert track/title in albums songs map
-			ait->second->songs.insert(make_pair(track,title));
 		}
-		else{
-		    
-		//ait = Artist->albums.find(artist); //iterator points where artist is --> need to check for album name here
-		//if(ait == Artist->albums.end()) { //if not found
+		else { 
+			//artist exists If it is there, print "Old Artist: " and the name
+			cout << "Old Artist: " << artist << endl; //TODO print formatted (spaces not '_'
 
+			//check if album exists. If it is there, print "Old Album: " and the name
+			ait = Artist->albums.find(album); 
+			if(ait == albums.end()) { //album does not exist
+				cout << "New Album: " << album << endl; //TODO formatting
+				//create album
+				Album *theAlbum = new Album();theAlbum->name = album; //initialized with read in album name
+				theAlbum->time = tDuration; //initialized with read in song time
+				theAlbum->nsongs = 1; //initialized with the 1 song inserted
+
+			}
+			else { //album exists
+				cout << "Old Album: " << album << endl; //TODO formatting
+			}
+			//insert songs into album song list and update album total song time
+			Song *theSong = new Song();
+            theSong->title = title; //initilized with read in song
+            theSong->time = tDuration; //initialized with read in song length
+			ait->songs.insert(make_pair(track, theSong);
+		
+			//print songs in correct format: track & time
 		}
 	}
 	
