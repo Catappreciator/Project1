@@ -27,6 +27,26 @@ struct Artist {
 };
 
 int main() {
-	cout << "hello" << endl;
+	//declare read in variables
+	string title;
+	string artist;
+	int time;
+	string album;
+	string genre;
+	int track;
+	
+	map<string, Album>::iterator ait; //iterates through artist
+
+	while(cin >> title >> artist >> time >> album >> genre >> track) {
+		
+		//find artist, if not there insert with album
+		ait = Artist->albums.find(artist);
+		if(ait == albums.end()) {
+			Artist->albums.insert(make_pair(artist, album));
+			ait = ait = Artist->albums.find(artist);
+			ait->second->songs;
+		}
+	}
+	
 	return 0;
 }
