@@ -1,3 +1,12 @@
+//NAMES: Kylie Norosky, Ada Whitefield
+//PROGRAM: Project01, Lib_info
+//DESCRIPTION:
+
+
+#include <iostream>
+using namespace std;
+
+
 struct Song { 
     string title;
     int time;  // could also be a string
@@ -18,5 +27,6 @@ struct Artist {
 };
 
 int main() {
+	cout << "hello" << endl;
 	return 0;
 }
