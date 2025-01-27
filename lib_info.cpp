@@ -58,7 +58,6 @@ string convertToString(int seconds) {
     }
     return line;
 }
-map<string, Artist> artists;
 int main() {
 	//declare read in variables
 	string title;
@@ -68,6 +67,7 @@ int main() {
 	string genre;
 	int track;
 	
+	map<string, Artist> artists;
 	map<string, Artist>::iterator sit; //iterates through artist
 	map<string, Album>::iterator ait; //iterates through album
 
@@ -81,9 +81,12 @@ int main() {
 			cout << "New Artist: " << artist << endl; //TODO: print formatted (spaces not '_')
 			Artist *theArtist = new Artist(); //create new artist
 			//update Artist attributes
+			artists.insert(make_pair(artist, theArtist));
 			theArtist->name = artist; //initialized with read in artist variable
 			theArtist->time = tDuration; //initialized with read in time
 			theArtist->nsongs = 1; //initialized with read in number of songs
+			
+
 
 			//create new album
 			cout << "New Album: " << album << endl; //TODO print formatted
@@ -99,7 +102,7 @@ int main() {
 			theSong->time = tDuration; //initialized with read in song length
 			
 			//This is the point where neovim starts to fuss
-	    
+			
 
 			//connect to Artist map with Album struct
 			theArtist->albums.insert(make_pair(album, theAlbum));
@@ -115,7 +118,7 @@ int main() {
 			cout << "Old Artist: " << artist << endl; //TODO print formatted (spaces not '_'
 
 			//check if album exists. If it is there, print "Old Album: " and the name
-			ait = Artist->albums.find(album); 
+			ait = sit->albums->second.find(album); 
 			if(ait == albums.end()) { //album does not exist
 				cout << "New Album: " << album << endl; //TODO formatting
 				//create album
@@ -131,7 +134,7 @@ int main() {
 			Song *theSong = new Song();
             theSong->title = title; //initilized with read in song
             theSong->time = tDuration; //initialized with read in song length
-			ait->songs.insert(make_pair(track, theSong);
+			ait->albums->songs.insert(make_pair(track, theSong));
 		
 			//print songs in correct format: track & time
 		}
