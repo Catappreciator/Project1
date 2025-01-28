@@ -32,7 +32,8 @@ struct Artist {
 int convertToSec(string duration){
     string minutes = duration.substr(0,2);
     string seconds = duration.substr(3,2);
-    cout << minutes << " " << seconds << endl;
+	stringstream ss;
+    //cout << minutes << " " << seconds << endl;
     int m = stoi(minutes);
     int s = stoi(seconds);
     m *= 60;
@@ -46,35 +47,34 @@ string convertToString(int seconds) {
     //divide by 60 for minutes
     int minutes = seconds / 60;
     int leftoverSec = seconds % 60; 
-
-    string line = "";
-    line.push_back(minutes);
-    line.push_back(':');
-
-    if(leftoverSec > 9) {
-        line.push_back(leftoverSec);
+	stringstream ss;
+	
+	if(leftoverSec > 9) {
+		ss << minutes << ":" << leftoverSec << endl;
     }
-    else {
-        line.push_back('0' + leftoverSec);
-    }
-    return line;
+	else {
+		ss << minutes << ":0" << leftoverSec << endl;
+	}
+
+    return ss.str();
 }
 //Removes underscore in string variables
 string stripUnderscore(string name){
     for(int i = 0; i < name.size(); i++){
-	if(name[i] == '_'){
-	    name[i] = ' ';
-	}
+		if(name[i] == '_'){
+			name[i] = ' ';
+		}
     }
     return name;
 
 }
 
 int main(int argc, char *argv[]) {
-
+	if(argc != 2) return 1;
 	//Open file from the command line argument to read in information
 	ifstream fin;
 	fin.open(argv[1]);
+	if(fin.fail()) return 1;
 	//declare read in variables
 	string title;
 	string artist;
@@ -98,21 +98,14 @@ int main(int argc, char *argv[]) {
 		if(sit == artists.end()) { //if not found
 		
 			//create new artist
-			cout << "New Artist: " << artist << endl; //TODO: print formatted (spaces not '_')
-			//Artist *theArtist = new Artist(); //create new artist
-			//update Artist attributes
+			cout << "New Artist: " << stripUnderscore(artist) << endl; //TODO: print formatted (spaces not '_')
 			Artist theArtist;
-			artists.insert(make_pair(artist, theArtist));
-			//artist = stripUnderscore(artist);
-			artists.insert(make_pair(artist, theArtist));
 			theArtist.name = artist; //initialized with read in artist variable
 			theArtist.time = tDuration; //initialized with read in time
 			theArtist.nsongs = 1; //initialized with read in number of songs
-			
-
 
 			//create new album
-			cout << "New Album: " << album << endl; //TODO print formatted
+			cout << "New Album: " << stripUnderscore(album) << endl; //TODO print formatted
 			Album theAlbum; //create album
 			//update Album attributes
 			theAlbum.name = album; //initialized with read in album name
@@ -125,47 +118,47 @@ int main(int argc, char *argv[]) {
 			theSong.time = tDuration; //initialized with read in song length
 				
 
-			//connect to Artist map with Album struct
-			theArtist.albums.insert(make_pair(album, theAlbum));
 			//connect to Album map with Song struct
 			theAlbum.songs.insert(make_pair(track, theSong));
-			theSong.title = title;
-			theSong.time = tDuration;
+			//connect to Artist map with Album struct
+			theArtist.albums.insert(make_pair(album, theAlbum));
+			//insert artist 
+			artists.insert(make_pair(artist, theArtist));
 
 
 		}
 		else { 
 			//artist exists If it is there, print "Old Artist: " and the name
-			cout << "Old Artist: " << artist << endl; //TODO print formatted (spaces not '_'
+			cout << "Old Artist: " << stripUnderscore(artist) << endl; 
+			//increase time and songs for artist  TODO check if song was previously exiosting
+			sit->second.time += tDuration;
+			sit->second.nsongs++;
 
 			//check if album exists. If it is there, print "Old Album: " and the name
 			ait = sit->second.albums.find(album);
 			if(ait == sit->second.albums.end()) { //album does not exist
-				cout << "New Album: " << album << endl; //TODO formatting
+				cout << "New Album: " << stripUnderscore(album) << endl; //TODO formatting
 				//create album
 				Album theAlbum;
 				theAlbum.name = album; //initialized with read in album name
 				theAlbum.time = tDuration; //initialized with read in song time
 				theAlbum.nsongs = 1; //initialized with the 1 song inserted
 
+				//add album to artist
+				sit->second.albums.insert(make_pair(album,theAlbum));
+
 			}
 			else { //album exists
-				cout << "Old Album: " << album << endl; 
-				//Increment number of songs if album already exists
+				cout << "Old Album: " << stripUnderscore(album) << endl; 
+				//Increment number of songs and time if album already exists
 				ait->second.nsongs++;
+				ait->second.time += tDuration;
 			}
-			//insert songs into album song list and update album total song time
+			//insert songs into album song and update album total song time
 			Song theSong;
 			theSong.title = title; //initilized with read in song
 			theSong.time = tDuration; //initialized with read in song length
 			ait->second.songs.insert(make_pair(track, theSong));
-
-
-	//Increment nsongs if artist already exists		
-			sit->second.nsongs++;
-			
-		
-			//print songs in correct format: track & time
 		}
 	}
 
