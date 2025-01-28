@@ -7,8 +7,8 @@
 #include <map>
 #include <string>
 #include <sstream>
+#include <fstream>
 using namespace std;
-
 
 struct Song { 
     string title;
@@ -69,7 +69,10 @@ string stripUnderscore(string name){
 
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+
+	ifstream fin;
+	fin.open(argv[1]);
 	//declare read in variables
 	string title;
 	string artist;
@@ -117,9 +120,7 @@ int main() {
 			Song theSong;
 			theSong.title = title; //initilized with read in song
 			theSong.time = tDuration; //initialized with read in song length
-			
-			//This is the point where neovim starts to fuss
-			
+				
 
 			//connect to Artist map with Album struct
 			theArtist.albums.insert(make_pair(album, theAlbum));
