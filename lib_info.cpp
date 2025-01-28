@@ -8,6 +8,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <iomanip>
 using namespace std;
 
 struct Song { 
@@ -33,12 +34,11 @@ int convertToSec(string duration){
     string minutes = duration.substr(0,2);
     string seconds = duration.substr(3,2);
 	stringstream ss;
-    //cout << minutes << " " << seconds << endl;
     int m = stoi(minutes);
     int s = stoi(seconds);
     m *= 60;
     s += m;
-    
+   
     return s;
 
 }
@@ -47,14 +47,9 @@ string convertToString(int seconds) {
     //divide by 60 for minutes
     int minutes = seconds / 60;
     int leftoverSec = seconds % 60; 
+
 	stringstream ss;
-	
-	if(leftoverSec > 9) {
-		ss << minutes << ":" << leftoverSec << endl;
-    }
-	else {
-		ss << minutes << ":0" << leftoverSec << endl;
-	}
+	ss << minutes << ':' << setw(2) << setfill('0') << leftoverSec;
 
     return ss.str();
 }
@@ -98,14 +93,14 @@ int main(int argc, char *argv[]) {
 		if(sit == artists.end()) { //if not found
 		
 			//create new artist
-			cout << "New Artist: " << stripUnderscore(artist) << endl; //TODO: print formatted (spaces not '_')
+//			cout << "New Artist: " << stripUnderscore(artist) << endl; //TODO: print formatted (spaces not '_')
 			Artist theArtist;
 			theArtist.name = artist; //initialized with read in artist variable
 			theArtist.time = tDuration; //initialized with read in time
 			theArtist.nsongs = 1; //initialized with read in number of songs
 
 			//create new album
-			cout << "New Album: " << stripUnderscore(album) << endl; //TODO print formatted
+//			cout << "New Album: " << stripUnderscore(album) << endl; //TODO print formatted
 			Album theAlbum; //create album
 			//update Album attributes
 			theAlbum.name = album; //initialized with read in album name
@@ -129,7 +124,7 @@ int main(int argc, char *argv[]) {
 		}
 		else { 
 			//artist exists If it is there, print "Old Artist: " and the name
-			cout << "Old Artist: " << stripUnderscore(artist) << endl; 
+//			cout << "Old Artist: " << stripUnderscore(artist) << endl; 
 			//increase time and songs for artist  TODO check if song was previously exiosting
 			sit->second.time += tDuration;
 			sit->second.nsongs++;
@@ -137,7 +132,7 @@ int main(int argc, char *argv[]) {
 			//check if album exists. If it is there, print "Old Album: " and the name
 			ait = sit->second.albums.find(album);
 			if(ait == sit->second.albums.end()) { //album does not exist
-				cout << "New Album: " << stripUnderscore(album) << endl; //TODO formatting
+//				cout << "New Album: " << stripUnderscore(album) << endl; //TODO formatting
 				//create album
 				Album theAlbum;
 				theAlbum.name = album; //initialized with read in album name
@@ -146,10 +141,11 @@ int main(int argc, char *argv[]) {
 
 				//add album to artist
 				sit->second.albums.insert(make_pair(album,theAlbum));
+				ait = sit->second.albums.find(album); //set iterator
 
 			}
 			else { //album exists
-				cout << "Old Album: " << stripUnderscore(album) << endl; 
+//				cout << "Old Album: " << stripUnderscore(album) << endl; 
 				//Increment number of songs and time if album already exists
 				ait->second.nsongs++;
 				ait->second.time += tDuration;
@@ -164,27 +160,32 @@ int main(int argc, char *argv[]) {
 
     //grayed out stuff is where I started on basic skeleton of output algorithm, don't want to run anything with it yet because it'll make things more confusing.
 
-/*	map<string, Artist>::iterator mit;
-	map<string, Album>::iterator oit;
-	map<int, Song>::iterator pit;
-//Loop through artists, maps should make it in lexographic order
-	for(mit = artists.begin(); mit != artists.end(); mit++){
-	//Convert time back into string format
-	    string artistTime = convertToString(mit->second.time);
-	    cout << mit->first << ':' << mit->second.nsongs << ', ' << artistTime << endl;
-	    //Output artist's albums
-	    for(oit = mit->second.albums.begin(); oit != mit->second.albums.end(); oit++){
-		string albumTime = convertToString(oit->second.time);
-		cout << oit->first << ': ' << oit->second.nsongs << ", " << albumTime << endl;
-		for(pit = oit->second.songs.begin(); pit != oit->second.songs.end(); pit++){
-		    string songTime = convertToString(pit->second.time);
-		    cout << pit->first << ". " << pit->second.title << ": " << songTime << endl;
-		}
+	map<string, Artist>::iterator mit; //artist iterator
+	map<string, Album>::iterator oit; //album
+	map<int, Song>::iterator pit; //song
 
+	//Loop through artists, maps should make it in lexographic order
+	for(mit = artists.begin(); mit != artists.end(); mit++) {
+		
+		//Convert time back into string format
+	    string artistTime = convertToString(mit->second.time);
+		//Print artist introduction
+	    cout << mit->first << ": " << mit->second.nsongs << ", " << artistTime << endl;
+	    
+		//Loop and output artist's albums
+	    for(oit = mit->second.albums.begin(); oit != mit->second.albums.end(); oit++){
+			//get album time
+			string albumTime = convertToString(oit->second.time);
+			cout << "        " << stripUnderscore(oit->first) << ": " << oit->second.nsongs << ", " << albumTime << endl;
+			
+			for(pit = oit->second.songs.begin(); pit != oit->second.songs.end(); pit++){
+				string songTime = convertToString(pit->second.time);
+				cout << "                " << pit->first << ". " << stripUnderscore(pit->second.title) << ": " << songTime << endl;
+			}
 	    }
 	//General pattern to follow for output:
 	
-	}*/
+	}
 	
 	
 	
