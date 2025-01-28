@@ -72,7 +72,8 @@ string stripUnderscore(string name){
 int main(int argc, char *argv[]) {
 
 	ifstream fin;
-	fin.open(argv[1]);
+	string argument = argv[1];
+	fin.open(argument);
 	//declare read in variables
 	string title;
 	string artist;
@@ -88,7 +89,7 @@ int main(int argc, char *argv[]) {
 
 	//TODO: Add up time for both artists and albums separately
 
-	while(cin >> title >> artist >> duration >> album >> genre >> track) {
+	while(fin >> title >> artist >> duration >> album >> genre >> track) {
 		int tDuration = convertToSec(duration);	//Immediately we can take in the string and convert to int
 		//find artist, if not there insert with album
 		sit = artists.find(artist); //iterator points where artist is
