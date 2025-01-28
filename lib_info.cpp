@@ -79,37 +79,38 @@ int main() {
 		
 			//create new artist
 			cout << "New Artist: " << artist << endl; //TODO: print formatted (spaces not '_')
-			Artist *theArtist = new Artist(); //create new artist
+			//Artist *theArtist = new Artist(); //create new artist
 			//update Artist attributes
+			Artist theArtist;
 			artists.insert(make_pair(artist, theArtist));
-			theArtist->name = artist; //initialized with read in artist variable
-			theArtist->time = tDuration; //initialized with read in time
-			theArtist->nsongs = 1; //initialized with read in number of songs
+			theArtist.name = artist; //initialized with read in artist variable
+			theArtist.time = tDuration; //initialized with read in time
+			theArtist.nsongs = 1; //initialized with read in number of songs
 			
 
 
 			//create new album
 			cout << "New Album: " << album << endl; //TODO print formatted
-			Album *theAlbum = new Album(); //create album
+			Album theAlbum; //create album
 			//update Album attributes
-			theAlbum->name = album; //initialized with read in album name
-			theAlbum->time = tDuration; //initialized with read in song time
-			theAlbum->nsongs = 1; //initialized with the 1 song inserted
+			theAlbum.name = album; //initialized with read in album name
+			theAlbum.time = tDuration; //initialized with read in song time
+			theAlbum.nsongs = 1; //initialized with the 1 song inserted
 
 			//create new song
-			Song *theSong = new Song();
-			theSong->title = title; //initilized with read in song
-			theSong->time = tDuration; //initialized with read in song length
+			Song theSong;
+			theSong.title = title; //initilized with read in song
+			theSong.time = tDuration; //initialized with read in song length
 			
 			//This is the point where neovim starts to fuss
 			
 
 			//connect to Artist map with Album struct
-			theArtist->albums.insert(make_pair(album, theAlbum));
+			theArtist.albums.insert(make_pair(album, theAlbum));
 			//connect to Album map with Song struct
-			theAlbum->songs.insert(make_pair(track, theSong));
-			theSong->title = title;
-			theSong->time = tDuration;
+			theAlbum.songs.insert(make_pair(track, theSong));
+			theSong.title = title;
+			theSong.time = tDuration;
 
 
 		}
@@ -118,23 +119,24 @@ int main() {
 			cout << "Old Artist: " << artist << endl; //TODO print formatted (spaces not '_'
 
 			//check if album exists. If it is there, print "Old Album: " and the name
-			ait = sit->albums->second.find(album); 
-			if(ait == albums.end()) { //album does not exist
+			ait = sit->second.albums.find(album);
+			if(ait == sit->second.albums.end()) { //album does not exist
 				cout << "New Album: " << album << endl; //TODO formatting
 				//create album
-				Album *theAlbum = new Album();theAlbum->name = album; //initialized with read in album name
-				theAlbum->time = tDuration; //initialized with read in song time
-				theAlbum->nsongs = 1; //initialized with the 1 song inserted
+				Album theAlbum;
+				theAlbum.name = album; //initialized with read in album name
+				theAlbum.time = tDuration; //initialized with read in song time
+				theAlbum.nsongs = 1; //initialized with the 1 song inserted
 
 			}
 			else { //album exists
 				cout << "Old Album: " << album << endl; //TODO formatting
 			}
 			//insert songs into album song list and update album total song time
-			Song *theSong = new Song();
-            theSong->title = title; //initilized with read in song
-            theSong->time = tDuration; //initialized with read in song length
-			ait->albums->songs.insert(make_pair(track, theSong));
+			Song theSong;
+			theSong.title = title; //initilized with read in song
+			theSong.time = tDuration; //initialized with read in song length
+			ait->second.songs.insert(make_pair(track, theSong));
 		
 			//print songs in correct format: track & time
 		}
