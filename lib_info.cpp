@@ -32,6 +32,7 @@ struct Artist {
 int convertToSec(string duration){
     string minutes = duration.substr(0,2);
     string seconds = duration.substr(3,2);
+    cout << minutes << " " << seconds << endl;
     int m = stoi(minutes);
     int s = stoi(seconds);
     m *= 60;
@@ -71,9 +72,9 @@ string stripUnderscore(string name){
 
 int main(int argc, char *argv[]) {
 
+	//Open file from the command line argument to read in information
 	ifstream fin;
-	string argument = argv[1];
-	fin.open(argument);
+	fin.open(argv[1]);
 	//declare read in variables
 	string title;
 	string artist;
@@ -88,9 +89,10 @@ int main(int argc, char *argv[]) {
     
 
 	//TODO: Add up time for both artists and albums separately
-
-	while(fin >> title >> artist >> duration >> album >> genre >> track) {
-		int tDuration = convertToSec(duration);	//Immediately we can take in the string and convert to int
+	//Use file stream to read in variables instead of cin
+	while(fin >> title >> duration >> artist >> album >> genre >> track) {
+		int tDuration = convertToSec(duration);
+		//Immediately we can take in the string and convert to int
 		//find artist, if not there insert with album
 		sit = artists.find(artist); //iterator points where artist is
 		if(sit == artists.end()) { //if not found
