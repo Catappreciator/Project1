@@ -1,3 +1,11 @@
 NAMES: Kylie Norosky, Ada WhiteField
+GITHUB: Catappreciator(Kylie), ajwhitefield(Ada)
 ASSIGNMENT: CS302, Project01 group assessment
+LINK: https://github.com/Catappreciator/Project1
+COMPILATION COMMAND: g++ -o lib_info lib_info.cpp
+	
 	Project 1 is the first assignment where we had partners to code with. The biggest challenge for us was when we were learning to use github. Our first meeting on Friday was trying to set up the repository for Project1 but we were struggling to pull/push the files. With time running short, we shifted to planning the assignment. On Monday we were able to met with TA Zach to help us decipher github. Using his guidance we were able to set up our project and begin coding. Our code's set up was done together in person and over the phone. When we were not together, we put our time into checking the code and fixing any bugs. Ada drafted majority of output while Kylie editted and fixed the formatting. By Tuesday night we were passing 73 test cases and decided to ask TA for help deciphering our final bug. Turns out we just had to remove underscores to names before they were stored instead of just on output. Overall our partnership was successful because we had good communication and worked with eachothers schedules.Despite the challenge of github, we were able to finish the project early because we planned ahead to get help. Coding as partners allowed us to bounce ideas off eachother and strategize solutions to issues we had.
+
+
+
+
