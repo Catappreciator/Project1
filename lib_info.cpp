@@ -98,6 +98,9 @@ int main(int argc, char *argv[]) {
 	//TODO: Add up time for both artists and albums separately
 	//Use file stream to read in variables instead of cin
 	while(fin >> title >> duration >> artist >> album >> genre >> track) {
+		artist = stripUnderscore(artist);
+		album = stripUnderscore(album);
+		title = stripUnderscore(title);
 		int tDuration = convertToSec(duration);
 		//Immediately we can take in the string and convert to int
 		//find artist, if not there insert with album
