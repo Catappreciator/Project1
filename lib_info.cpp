@@ -1,5 +1,8 @@
 //NAMES: Kylie Norosky, Ada Whitefield
 //PROGRAM: Project01, Lib_info
+//GIT: Catappreciator(Kylie), ajwhitefield(Ada)
+//LINK: https://github.com/Catappreciator/Project1
+//COMPILE: g++ -o lib_info lib_info.cpp
 //DESCRIPTION: A program to sort through and organize a musical library in lexicographical format.
 
 #include <iostream>
