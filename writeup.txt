@@ -1,0 +1,13 @@
+NAMES: Kylie Norosky, Ada WhiteField
+ASSIGNMENT: CS302, Project01
+	//introduction: initial thoughts/feelings on partnering for a coding project
+	Project 1 is the first assignment where we had partners to code with. There was a learning curve for us when we were learning to use github. Neither of us had experience with a platform such as github that allowed multiple people to pull and post updates of code. Our first meeting on Friday was trying to set up our repository for the Project but we were unsuccessful and shifted to planning the assignment. On Monday we both were free after 11, so we were able to meet with TA Zach to help us decipher github. With his guidance we were able to set up our project and begin coding. Our code's set up was done together in person and over the phone. We split up helper functions seperate and when we were not together put time into checking the code and fixing any bugs. Ada drafted our output and Kylie helped edit the bugs, implement functions and arrange code which was causing repetitive looping. By Tuesday night we were passing 73 test cases and decided to ask TA for help deciphering our final issue. Turns out we just had to remove underscores to names before they were stored instead of just on output. Overall our partnership was successful because we had good communication and worked with eachothers schedules. Despite the challenge of github, we were able to finish the project early because we planned ahead to get help. Coding as partners allowed us to bounce ideas off eachother and strategize solutions to issues we had.
+
+
+	//Reasonings: Why we partnered up, why we chose the timing schedule to work on project
+
+	//Challenges:
+
+	//Strengths:
+
+	//Overall:
