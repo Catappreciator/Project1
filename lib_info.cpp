@@ -11,22 +11,22 @@
 using namespace std;
 
 struct Song { 
-    string title;
-    int time;  
+	string title;
+	int time;  
 };
 
 struct Album {
-    map <int, Song > songs;
-    string name;
-    int time;
-    int nsongs;  
+	map <int, Song > songs;
+	string name;
+	int time;
+	int nsongs;  
 };
 
 struct Artist {
-    map <string, Album > albums;
-    string name;
-    int time;
-    int nsongs;
+	map <string, Album > albums;
+	string name;
+	int time;
+	int nsongs;
 };
 
 //This helper function converts the time string that is read in to seconds in integer form.
@@ -47,32 +47,32 @@ int convertToSec(string duration) {
 			seconds += duration[i];
 		}
 	}
-    int m = stoi(minutes);
-    int s = stoi(seconds);
-    m *= 60;
-    s += m;
-   
-    return s;
+	int m = stoi(minutes);
+	int s = stoi(seconds);
+	m *= 60;
+	s += m;
+
+	return s;
 
 }
 
 //This helper function converts seconds to time in proper format (as a string).
 string convertToString(int seconds) {
-    int minutes = seconds / 60;
-    int leftoverSec = seconds % 60; 
+	int minutes = seconds / 60;
+	int leftoverSec = seconds % 60; 
 	stringstream ss;
 	ss << minutes << ':' << setw(2) << setfill('0') << leftoverSec;
 
-    return ss.str();
+	return ss.str();
 }
 //Removes underscore in string variables
 string stripUnderscore(string name){
-    for(int i = 0; i < name.size(); i++){
+	for(int i = 0; i < name.size(); i++){
 		if(name[i] == '_'){
 			name[i] = ' ';
 		}
-    }
-    return name;
+	}
+	return name;
 
 }
 
@@ -89,33 +89,33 @@ int main(int argc, char *argv[]) {
 	string album;
 	string genre;
 	int track;
-	
+
 	//Here a map to hold artists is declared along with iterators for the artist map and album map.
 	map<string, Artist> artists;
 	map<string, Artist>::iterator sit; 
 	map<string, Album>::iterator ait; 
-    
+
 	//While loop reads in variables and helper functions are used for the set up.
 	while(fin >> title >> duration >> artist >> album >> genre >> track) {
 		artist = stripUnderscore(artist);
 		album = stripUnderscore(album);
 		title = stripUnderscore(title);
 		int tDuration = convertToSec(duration);
-	
-		//find artist, if not there insert with album
+
+		//Find artist, if not there insert with album
 		sit = artists.find(artist); 
 		if(sit == artists.end()) { 
-		
+
 			//Creates artist struct and fills the attributes
 			Artist theArtist;
 			theArtist.name = artist; 
 			theArtist.time = tDuration; 
 			theArtist.nsongs = 1; 
 
-			//creates new album struct and fills attributes 
-			
+			//Creates new album struct and fills attributes 
+
 			Album theAlbum; 
-			
+
 			theAlbum.name = album; 
 			theAlbum.time = tDuration; 
 			theAlbum.nsongs = 1; 
@@ -124,7 +124,7 @@ int main(int argc, char *argv[]) {
 			Song theSong;
 			theSong.title = title;
 			theSong.time = tDuration;
-				
+
 
 			//Insert map pairs into structs
 			theAlbum.songs.insert(make_pair(track, theSong));
@@ -147,17 +147,17 @@ int main(int argc, char *argv[]) {
 				theAlbum.time = tDuration; 
 				theAlbum.nsongs = 1; 
 
-				//add album to artist
+				//Add album to artist
 				sit->second.albums.insert(make_pair(album,theAlbum));
 				ait = sit->second.albums.find(album); //set iterator
 
 			}
 			else { //Album already exists. Increment songs and time.
-				
+
 				ait->second.nsongs++;
 				ait->second.time += tDuration;
 			}
-			//insert songs into album song and update album total song time
+			//Insert songs into album song and update album total song time
 			Song theSong;
 			theSong.title = title; 
 			theSong.time = tDuration; 
@@ -165,34 +165,32 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	map<string, Artist>::iterator mit; //artist iterator
-	map<string, Album>::iterator oit; //album iterator
-	map<int, Song>::iterator pit; //song iterator
+	map<string, Artist>::iterator mit; //Artist iterator
+	map<string, Album>::iterator oit; //Album iterator
+	map<int, Song>::iterator pit; //Song iterator
 
 	//Loop through artists, maps should make it in lexicographic order
 	for(mit = artists.begin(); mit != artists.end(); mit++) {
-		
-		//Convert time back into string format
-	    string artistTime = convertToString(mit->second.time);
-	    cout << mit->first << ": " << mit->second.nsongs << ", " << artistTime << endl;
-	    
-		//Print artist introduction
+
+		//Convert time and print artist introduction
+		string artistTime = convertToString(mit->second.time);
+		cout << mit->first << ": " << mit->second.nsongs << ", " << artistTime << endl;
+
 		//Loop and output artist's albums
-	    for(oit = mit->second.albums.begin(); oit != mit->second.albums.end(); oit++){
-			//get album time
+		for(oit = mit->second.albums.begin(); oit != mit->second.albums.end(); oit++){
 			string albumTime = convertToString(oit->second.time);
 			cout << "        " << oit->first << ": " << oit->second.nsongs << ", " << albumTime << endl;
-			
+			//Loop and output songs from albums
 			for(pit = oit->second.songs.begin(); pit != oit->second.songs.end(); pit++){
 				string songTime = convertToString(pit->second.time);
 				cout << "                " << pit->first << ". " << pit->second.title << ": " << songTime << endl;
 			}
-	    }
-	
-	
+		}
+
+
 	}
-	
-	
-	
+
+
+
 	return 0;
 }
