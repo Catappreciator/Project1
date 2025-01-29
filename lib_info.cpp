@@ -1,8 +1,7 @@
 //NAMES: Kylie Norosky, Ada Whitefield
 //PROGRAM: Project01, Lib_info
-//DESCRIPTION:
+//DESCRIPTION: A program to sort through and organize a musical library in lexicographical format.
 
-//I hate Git rn
 #include <iostream>
 #include <map>
 #include <string>
@@ -13,14 +12,14 @@ using namespace std;
 
 struct Song { 
     string title;
-    int time;  // could also be a string
+    int time;  
 };
 
 struct Album {
     map <int, Song > songs;
     string name;
     int time;
-    int nsongs;  // optional variable but makes it easier
+    int nsongs;  
 };
 
 struct Artist {
@@ -30,6 +29,7 @@ struct Artist {
     int nsongs;
 };
 
+//This helper function converts the time string that is read in to seconds in integer form.
 int convertToSec(string duration) {
 
 	string minutes = "";
@@ -56,8 +56,8 @@ int convertToSec(string duration) {
 
 }
 
+//This helper function converts seconds to time in proper format (as a string).
 string convertToString(int seconds) {
-    //divide by 60 for minutes
     int minutes = seconds / 60;
     int leftoverSec = seconds % 60; 
 	stringstream ss;
@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
 	ifstream fin;
 	fin.open(argv[1]);
 	if(fin.fail()) return 1;
-	//declare read in variables
+
 	string title;
 	string artist;
 	string duration;
@@ -90,115 +90,105 @@ int main(int argc, char *argv[]) {
 	string genre;
 	int track;
 	
+	//Here a map to hold artists is declared along with iterators for the artist map and album map.
 	map<string, Artist> artists;
-	map<string, Artist>::iterator sit; //iterates through artist
-	map<string, Album>::iterator ait; //iterates through album
+	map<string, Artist>::iterator sit; 
+	map<string, Album>::iterator ait; 
     
-
-	//TODO: Add up time for both artists and albums separately
-	//Use file stream to read in variables instead of cin
+	//While loop reads in variables and helper functions are used for the set up.
 	while(fin >> title >> duration >> artist >> album >> genre >> track) {
 		artist = stripUnderscore(artist);
 		album = stripUnderscore(album);
 		title = stripUnderscore(title);
 		int tDuration = convertToSec(duration);
-		//Immediately we can take in the string and convert to int
+	
 		//find artist, if not there insert with album
-		sit = artists.find(artist); //iterator points where artist is
-		if(sit == artists.end()) { //if not found
+		sit = artists.find(artist); 
+		if(sit == artists.end()) { 
 		
-			//create new artist
-//			cout << "New Artist: " << stripUnderscore(artist) << endl; //TODO: print formatted (spaces not '_')
+			//Creates artist struct and fills the attributes
 			Artist theArtist;
-			theArtist.name = artist; //initialized with read in artist variable
-			theArtist.time = tDuration; //initialized with read in time
-			theArtist.nsongs = 1; //initialized with read in number of songs
+			theArtist.name = artist; 
+			theArtist.time = tDuration; 
+			theArtist.nsongs = 1; 
 
-			//create new album
-//			cout << "New Album: " << stripUnderscore(album) << endl; //TODO print formatted
-			Album theAlbum; //create album
-			//update Album attributes
-			theAlbum.name = album; //initialized with read in album name
-			theAlbum.time = tDuration; //initialized with read in song time
-			theAlbum.nsongs = 1; //initialized with the 1 song inserted
+			//creates new album struct and fills attributes 
+			
+			Album theAlbum; 
+			
+			theAlbum.name = album; 
+			theAlbum.time = tDuration; 
+			theAlbum.nsongs = 1; 
 
-			//create new song
+			//Creates new song struct and fills attributes
 			Song theSong;
-			theSong.title = title; //initilized with read in song
-			theSong.time = tDuration; //initialized with read in song length
+			theSong.title = title;
+			theSong.time = tDuration;
 				
 
-			//connect to Album map with Song struct
+			//Insert map pairs into structs
 			theAlbum.songs.insert(make_pair(track, theSong));
-			//connect to Artist map with Album struct
 			theArtist.albums.insert(make_pair(album, theAlbum));
-			//insert artist 
 			artists.insert(make_pair(artist, theArtist));
 
 
 		}
 		else { 
-			//artist exists If it is there, print "Old Artist: " and the name
-//			cout << "Old Artist: " << stripUnderscore(artist) << endl; 
-			//increase time and songs for artist  TODO check if song was previously exiosting
+			//Increment time
 			sit->second.time += tDuration;
 			sit->second.nsongs++;
 
-			//check if album exists. If it is there, print "Old Album: " and the name
+			//Artist exists, check to see if the album already exists
 			ait = sit->second.albums.find(album);
-			if(ait == sit->second.albums.end()) { //album does not exist
-//				cout << "New Album: " << stripUnderscore(album) << endl; //TODO formatting
-				//create album
+			if(ait == sit->second.albums.end()) { 
+				//Create new album if it doesn't exist.				
 				Album theAlbum;
-				theAlbum.name = album; //initialized with read in album name
-				theAlbum.time = tDuration; //initialized with read in song time
-				theAlbum.nsongs = 1; //initialized with the 1 song inserted
+				theAlbum.name = album; 
+				theAlbum.time = tDuration; 
+				theAlbum.nsongs = 1; 
 
 				//add album to artist
 				sit->second.albums.insert(make_pair(album,theAlbum));
 				ait = sit->second.albums.find(album); //set iterator
 
 			}
-			else { //album exists
-//				cout << "Old Album: " << stripUnderscore(album) << endl; 
-				//Increment number of songs and time if album already exists
+			else { //Album already exists. Increment songs and time.
+				
 				ait->second.nsongs++;
 				ait->second.time += tDuration;
 			}
 			//insert songs into album song and update album total song time
 			Song theSong;
-			theSong.title = title; //initilized with read in song
-			theSong.time = tDuration; //initialized with read in song length
+			theSong.title = title; 
+			theSong.time = tDuration; 
 			ait->second.songs.insert(make_pair(track, theSong));
 		}
 	}
 
-    //grayed out stuff is where I started on basic skeleton of output algorithm, don't want to run anything with it yet because it'll make things more confusing.
-
 	map<string, Artist>::iterator mit; //artist iterator
-	map<string, Album>::iterator oit; //album
-	map<int, Song>::iterator pit; //song
+	map<string, Album>::iterator oit; //album iterator
+	map<int, Song>::iterator pit; //song iterator
 
-	//Loop through artists, maps should make it in lexographic order
+	//Loop through artists, maps should make it in lexicographic order
 	for(mit = artists.begin(); mit != artists.end(); mit++) {
 		
 		//Convert time back into string format
 	    string artistTime = convertToString(mit->second.time);
-		//Print artist introduction
-	    cout << stripUnderscore(mit->first) << ": " << mit->second.nsongs << ", " << artistTime << endl;
+	    cout << mit->first << ": " << mit->second.nsongs << ", " << artistTime << endl;
 	    
+		//Print artist introduction
 		//Loop and output artist's albums
 	    for(oit = mit->second.albums.begin(); oit != mit->second.albums.end(); oit++){
 			//get album time
 			string albumTime = convertToString(oit->second.time);
-			cout << "        " << stripUnderscore(oit->first) << ": " << oit->second.nsongs << ", " << albumTime << endl;
+			cout << "        " << oit->first << ": " << oit->second.nsongs << ", " << albumTime << endl;
 			
 			for(pit = oit->second.songs.begin(); pit != oit->second.songs.end(); pit++){
 				string songTime = convertToString(pit->second.time);
-				cout << "                " << pit->first << ". " << stripUnderscore(pit->second.title) << ": " << songTime << endl;
+				cout << "                " << pit->first << ". " << pit->second.title << ": " << songTime << endl;
 			}
 	    }
-	//General pattern to follow for output:
+	
 	
 	}
 	
