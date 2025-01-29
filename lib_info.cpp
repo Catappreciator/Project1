@@ -30,10 +30,23 @@ struct Artist {
     int nsongs;
 };
 
-int convertToSec(string duration){
-    string minutes = duration.substr(0,2);
-    string seconds = duration.substr(3,2);
-	stringstream ss;
+int convertToSec(string duration) {
+
+	string minutes = "";
+	string seconds = "";
+	bool before = true;
+	for(int i = 0; i < duration.size(); i++) {
+		if(duration[i] == ':') {
+			before = false;
+			i++;
+		}
+		if(before) {
+			minutes += duration[i];
+		}
+		else {
+			seconds += duration[i];
+		}
+	}
     int m = stoi(minutes);
     int s = stoi(seconds);
     m *= 60;
@@ -47,7 +60,6 @@ string convertToString(int seconds) {
     //divide by 60 for minutes
     int minutes = seconds / 60;
     int leftoverSec = seconds % 60; 
-
 	stringstream ss;
 	ss << minutes << ':' << setw(2) << setfill('0') << leftoverSec;
 
@@ -170,7 +182,7 @@ int main(int argc, char *argv[]) {
 		//Convert time back into string format
 	    string artistTime = convertToString(mit->second.time);
 		//Print artist introduction
-	    cout << mit->first << ": " << mit->second.nsongs << ", " << artistTime << endl;
+	    cout << stripUnderscore(mit->first) << ": " << mit->second.nsongs << ", " << artistTime << endl;
 	    
 		//Loop and output artist's albums
 	    for(oit = mit->second.albums.begin(); oit != mit->second.albums.end(); oit++){
